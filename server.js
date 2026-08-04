@@ -2,7 +2,8 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = process.env.PORT || 3000;
+// Railway injects PORT; the fallback matches the port the custom domain routes to.
+const PORT = process.env.PORT || 8080;
 const PAGE = fs.readFileSync(path.join(__dirname, 'public', 'index.html'));
 
 const server = http.createServer((req, res) => {
