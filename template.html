@@ -1,0 +1,679 @@
+<title>Moodus Promoboard design rules</title>
+<style>
+  :root{
+    --ground:#eef1f6; --surface:#ffffff; --surface-2:#f6f8fc;
+    --ink:#16233a; --muted:#5b6675; --hair:#dde3ee;
+    --navy:#1a2e4a; --accent:#2979ff; --accent-ink:#1b5fd6;
+    --note-bg:#fff6e6; --note-bd:#f4d38a; --note-ink:#7a5410;
+    --ok:#1f8a54; --ok-bg:#e7f6ee; --ok-bd:#b7e3c9;
+    --bad:#c0392b; --bad-bg:#fdecea; --bad-bd:#f3c6c1;
+    --shadow:0 1px 2px rgba(20,35,58,.06),0 8px 24px rgba(20,35,58,.08);
+    --radius:14px;
+    --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --ground:#0e1626; --surface:#16233a; --surface-2:#1b2b47;
+      --ink:#e9f0fb; --muted:#9fb0c8; --hair:#2a3b58;
+      --navy:#0b1424; --accent:#4b93ff; --accent-ink:#8fbaff;
+      --note-bg:#2a2415; --note-bd:#5c4a1f; --note-ink:#f0d495;
+      --ok:#4cc985; --ok-bg:#15301f; --ok-bd:#2c5a3c;
+      --bad:#ff9188; --bad-bg:#2c1917; --bad-bd:#5a2f2a;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="light"]{
+    --ground:#eef1f6; --surface:#ffffff; --surface-2:#f6f8fc;
+    --ink:#16233a; --muted:#5b6675; --hair:#dde3ee;
+    --navy:#1a2e4a; --accent:#2979ff; --accent-ink:#1b5fd6;
+    --note-bg:#fff6e6; --note-bd:#f4d38a; --note-ink:#7a5410;
+    --ok:#1f8a54; --ok-bg:#e7f6ee; --ok-bd:#b7e3c9;
+    --bad:#c0392b; --bad-bg:#fdecea; --bad-bd:#f3c6c1;
+    --shadow:0 1px 2px rgba(20,35,58,.06),0 8px 24px rgba(20,35,58,.08);
+  }
+  :root[data-theme="dark"]{
+    --ground:#0e1626; --surface:#16233a; --surface-2:#1b2b47;
+    --ink:#e9f0fb; --muted:#9fb0c8; --hair:#2a3b58;
+    --navy:#0b1424; --accent:#4b93ff; --accent-ink:#8fbaff;
+    --note-bg:#2a2415; --note-bd:#5c4a1f; --note-ink:#f0d495;
+    --ok:#4cc985; --ok-bg:#15301f; --ok-bd:#2c5a3c;
+    --bad:#ff9188; --bad-bg:#2c1917; --bad-bd:#5a2f2a;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+    line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:760px;margin:0 auto;padding:0 20px 64px;}
+
+  /* header */
+  header{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--ground) 88%,transparent);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--hair);}
+  .head-inner{max-width:760px;margin:0 auto;padding:16px 20px 14px;}
+  .brand{display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--muted);font-weight:700;}
+  .brand .logo{height:26px;width:auto;display:block;}
+  .brand .model{display:flex;align-items:center;gap:12px;}
+  .brand .model::before{content:"";width:1px;height:16px;background:var(--hair);}
+  h1{margin:.5rem 0 .15rem;font-size:clamp(24px,5vw,34px);line-height:1.1;letter-spacing:-.02em;
+    color:var(--ink);text-wrap:balance;font-weight:800;}
+  .sub{margin:0;color:var(--muted);font-size:clamp(14px,2.4vw,16px);max-width:52ch;text-wrap:balance;}
+
+  /* language switch */
+  .langs{display:flex;gap:4px;margin-top:14px;background:var(--surface-2);
+    border:1px solid var(--hair);border-radius:999px;padding:4px;width:max-content;max-width:100%;
+    overflow-x:auto;}
+  .langbtn{appearance:none;border:0;background:transparent;color:var(--muted);cursor:pointer;
+    font:inherit;font-weight:600;font-size:13px;padding:6px 14px;border-radius:999px;white-space:nowrap;
+    transition:background .15s,color .15s;}
+  .langbtn[aria-pressed="true"]{background:var(--accent);color:#fff;box-shadow:var(--shadow);}
+  .langbtn:focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px;}
+
+  /* note */
+  .note{display:flex;gap:12px;background:var(--note-bg);border:1px solid var(--note-bd);
+    color:var(--note-ink);border-radius:var(--radius);padding:14px 16px;margin:22px 0 8px;}
+  .note svg{flex:none;margin-top:2px}
+  .note .lbl{display:block;font-weight:800;letter-spacing:.02em;margin-bottom:2px;font-size:14px;}
+  .note p{margin:0;font-size:14.5px;color:var(--note-ink);}
+
+  .start{display:flex;align-items:center;gap:12px;margin:24px 0 6px;padding:14px 16px;
+    background:var(--surface);border:1px solid var(--hair);border-radius:var(--radius);box-shadow:var(--shadow);}
+  .start .pw{flex:none;width:34px;height:34px;border-radius:9px;display:grid;place-items:center;
+    background:var(--navy);color:#fff;}
+  .start p{margin:0;font-weight:600;}
+  .start a{color:var(--accent-ink);text-decoration:none;border-bottom:1px solid var(--hair);}
+  .start a:hover{border-bottom-color:var(--accent-ink);}
+
+  /* section heads */
+  h2{margin:38px 0 0;font-size:clamp(18px,3.2vw,22px);letter-spacing:-.01em;font-weight:800;
+    color:var(--ink);text-wrap:balance;}
+  h2 + .lede{margin:4px 0 0;color:var(--muted);font-size:14.5px;max-width:56ch;}
+
+  /* requirement list */
+  ul.items{list-style:none;margin:10px 0 0;padding:0;}
+  li.item{display:grid;grid-template-columns:auto 1fr;gap:0 14px;align-items:start;
+    padding:20px 0;border-top:1px solid var(--hair);}
+  li.item:first-child{border-top:0;}
+  .tick{flex:none;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;
+    background:var(--surface);border:1px solid var(--hair);color:var(--accent-ink);
+    box-shadow:var(--shadow);margin-top:1px;}
+  .txt{min-width:0;}
+  .eyebrow{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-ink);
+    font-weight:800;margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .pill{font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;
+    color:var(--muted);background:var(--surface-2);border:1px solid var(--hair);
+    padding:2px 8px;border-radius:999px;}
+  .pill.must{color:var(--accent-ink);background:color-mix(in srgb,var(--accent) 12%,transparent);
+    border-color:color-mix(in srgb,var(--accent) 32%,transparent);}
+  .cap{font-size:clamp(15.5px,2.6vw,17px);font-weight:600;color:var(--ink);margin:0;text-wrap:pretty;}
+  .cap b{color:var(--accent-ink);font-weight:800;}
+  .cap .gloss{display:block;font-weight:500;color:var(--muted);font-size:14px;margin-top:4px;}
+
+  /* reject list */
+  .reject{margin:12px 0 0;padding:16px 18px;border-radius:var(--radius);
+    background:var(--bad-bg);border:1px solid var(--bad-bd);}
+  .reject ul{list-style:none;margin:0;padding:0;display:grid;gap:9px;}
+  .reject li{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;font-weight:600;color:var(--ink);}
+  .reject svg{flex:none;color:var(--bad);margin-top:3px;}
+
+  /* included / not included */
+  .split{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:12px;}
+  .list{background:var(--surface);border:1px solid var(--hair);border-radius:var(--radius);
+    padding:14px 16px;box-shadow:var(--shadow);}
+  .list h3{margin:0 0 10px;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;
+    font-weight:800;color:var(--muted);}
+  .list ul{list-style:none;margin:0;padding:0;display:grid;gap:9px;}
+  .list li{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;font-weight:600;color:var(--ink);}
+  .list svg{flex:none;margin-top:3px;}
+  .list.yes svg{color:var(--ok);}
+  .list.no svg{color:var(--muted);}
+  table.price td:last-child{text-align:right;white-space:nowrap;color:var(--ink);font-weight:700;}
+  table.price thead th:last-child{text-align:right;}
+  table.price{min-width:340px;}
+
+  /* handled-by-us cards */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px;}
+  .card{background:var(--surface);border:1px solid var(--hair);border-radius:var(--radius);
+    padding:14px 16px;box-shadow:var(--shadow);}
+  .card h3{margin:0 0 3px;font-size:14px;font-weight:800;color:var(--ink);letter-spacing:-.005em;}
+  .card p{margin:0;font-size:13.5px;color:var(--muted);}
+
+  /* size table */
+  .tablewrap{overflow-x:auto;margin-top:12px;border:1px solid var(--hair);border-radius:var(--radius);
+    background:var(--surface);box-shadow:var(--shadow);}
+  table{border-collapse:collapse;width:100%;min-width:420px;font-size:14.5px;
+    font-variant-numeric:tabular-nums;}
+  th,td{text-align:left;padding:11px 16px;border-top:1px solid var(--hair);}
+  thead th{border-top:0;background:var(--surface-2);font-size:11.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--muted);font-weight:800;}
+  tbody th{font-weight:700;color:var(--ink);}
+  td{color:var(--muted);font-weight:600;}
+
+  .done{display:flex;gap:12px;align-items:flex-start;margin-top:30px;padding:16px 18px;border-radius:var(--radius);
+    background:var(--ok-bg);border:1px solid var(--ok-bd);}
+  .done svg{flex:none;color:var(--ok);margin-top:1px}
+  .done p{margin:0;font-weight:600;color:var(--ink)}
+
+  footer{margin-top:34px;color:var(--muted);font-size:12.5px;text-align:center;
+    padding-top:18px;border-top:1px solid var(--hair);}
+  footer a{color:var(--muted);}
+
+  @media (max-width:560px){
+    li.item{grid-template-columns:1fr;gap:10px;}
+    .tick{display:none;}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header>
+  <div class="head-inner">
+    <div class="brand"><img class="logo" src="%%logo%%" alt="Moodus"><span class="model" data-i18n="kicker">Promoboard design</span></div>
+    <h1 data-i18n="title">Promoboard design rules</h1>
+    <p class="sub" data-i18n="subtitle">What our in-house designer needs from you to design your Moodus board.</p>
+    <div class="langs" role="group" aria-label="Language">
+      <button class="langbtn" data-lang="en" onclick="setLang('en')">English</button>
+      <button class="langbtn" data-lang="nl" onclick="setLang('nl')">Nederlands</button>
+      <button class="langbtn" data-lang="fr" onclick="setLang('fr')">Français</button>
+      <button class="langbtn" data-lang="de" onclick="setLang('de')">Deutsch</button>
+      <button class="langbtn" data-lang="it" onclick="setLang('it')">Italiano</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="note">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <div><span class="lbl" data-i18n="revLabel">One revision round</span><p data-i18n="rev">You receive a design proposal, and you get one round of corrections on it. Send all your remarks together in a single message. Each additional revision round is €25.</p></div>
+  </div>
+
+  <div class="start">
+    <span class="pw" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span>
+    <p data-i18n="start">Send everything in one email to <a href="mailto:design@moodus.com">design@moodus.com</a>.</p>
+  </div>
+
+  <h2 data-i18n="needLabel">What we need from you</h2>
+  <p class="lede" data-i18n="needSub">We start designing once the required items are in. Anything missing pauses your board.</p>
+
+  <ul class="items">
+    <li class="item">
+      <span class="tick" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+      <div class="txt"><div class="eyebrow"><span data-i18n="i1n">Logo</span><span class="pill must" data-i18n="required">Required</span></div><p class="cap" data-i18n="i1"></p></div>
+    </li>
+    <li class="item">
+      <span class="tick" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+      <div class="txt"><div class="eyebrow"><span data-i18n="i2n">Text</span><span class="pill must" data-i18n="required">Required</span></div><p class="cap" data-i18n="i2"></p></div>
+    </li>
+    <li class="item">
+      <span class="tick" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+      <div class="txt"><div class="eyebrow"><span data-i18n="i3n">Board model</span><span class="pill must" data-i18n="required">Required</span></div><p class="cap" data-i18n="i3"></p></div>
+    </li>
+    <li class="item">
+      <span class="tick" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+      <div class="txt"><div class="eyebrow"><span data-i18n="i4n">Brand colours</span><span class="pill" data-i18n="optional">If you have them</span></div><p class="cap" data-i18n="i4"></p></div>
+    </li>
+    <li class="item">
+      <span class="tick" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+      <div class="txt"><div class="eyebrow"><span data-i18n="i5n">Fonts</span><span class="pill" data-i18n="optional">If you have them</span></div><p class="cap" data-i18n="i5"></p></div>
+    </li>
+    <li class="item">
+      <span class="tick" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+      <div class="txt"><div class="eyebrow"><span data-i18n="i6n">Photos</span><span class="pill" data-i18n="optional">If you have them</span></div><p class="cap" data-i18n="i6"></p></div>
+    </li>
+    <li class="item">
+      <span class="tick" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+      <div class="txt"><div class="eyebrow"><span data-i18n="i7n">QR code</span><span class="pill" data-i18n="optional">If you have them</span></div><p class="cap" data-i18n="i7"></p></div>
+    </li>
+    <li class="item">
+      <span class="tick" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+      <div class="txt"><div class="eyebrow"><span data-i18n="i8n">Style direction</span><span class="pill" data-i18n="optional">If you have them</span></div><p class="cap" data-i18n="i8"></p></div>
+    </li>
+  </ul>
+
+  <h2 data-i18n="incLabel">What is included</h2>
+  <p class="lede" data-i18n="incSub">The design process covers the design itself. It does not cover correcting or improving the material you send us.</p>
+  <div class="split">
+    <div class="list yes">
+      <h3 data-i18n="incYes">Included</h3>
+      <ul>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="in1">Designing your board with the text, images and logo you send</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="in2">One revision round, if you want to change text or images</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="in3">A print-ready file with bleed, safe zone and cutting contour</span></li>
+      </ul>
+    </div>
+    <div class="list no">
+      <h3 data-i18n="incNo">Not included</h3>
+      <ul>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg><span data-i18n="ex1">Checking your text for spelling or typing errors</span></li>
+        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg><span data-i18n="ex2">Retouching or editing your images</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <h2 data-i18n="costLabel">Extra work</h2>
+  <p class="lede" data-i18n="costSub">Only charged if you ask for it. We always confirm before we start.</p>
+  <div class="tablewrap">
+    <table class="price">
+      <thead><tr><th data-i18n="thWork">Work</th><th data-i18n="thPrice">Price</th></tr></thead>
+      <tbody>
+        <tr><th scope="row" data-i18n="c1">Additional revision round</th><td data-i18n="c1p">€25</td></tr>
+        <tr><th scope="row" data-i18n="c2">Retouching images</th><td data-i18n="c2p">€25 per half hour</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 data-i18n="noLabel">What we cannot use</h2>
+  <p class="lede" data-i18n="noSub">These look fine on a screen but fall apart at print size. If this is all you have, let us know and we will tell you what is possible.</p>
+  <div class="reject">
+    <ul>
+      <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg><span data-i18n="no1">A logo copied or downloaded from a website</span></li>
+      <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg><span data-i18n="no2">Screenshots, or photos of a printed logo</span></li>
+      <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg><span data-i18n="no3">Images sent through WhatsApp, Facebook or Instagram</span></li>
+      <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg><span data-i18n="no4">A logo pasted into Word, PowerPoint or a PDF</span></li>
+      <li><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg><span data-i18n="no5">Images under 300 dpi at the real board size</span></li>
+    </ul>
+  </div>
+
+  <h2 data-i18n="weLabel">What we take care of</h2>
+  <p class="lede" data-i18n="weSub">You do not have to prepare anything for print. Our designer sets all of this up.</p>
+  <div class="cards">
+    <div class="card"><h3 data-i18n="w1n">Layout</h3><p data-i18n="w1">Composition, sizing and balance across the whole board.</p></div>
+    <div class="card"><h3 data-i18n="w2n">Bleed &amp; safe zone</h3><p data-i18n="w2">10 mm bleed around the board, 10 mm safe margin inside it.</p></div>
+    <div class="card"><h3 data-i18n="w3n">Cutting contour</h3><p data-i18n="w3">The cut line and the terminal opening, positioned exactly.</p></div>
+    <div class="card"><h3 data-i18n="w4n">Print file</h3><p data-i18n="w4">Colour conversion and a production-ready file for the printer.</p></div>
+  </div>
+
+  <h2 data-i18n="sizeLabel">Board sizes</h2>
+  <p class="lede" data-i18n="sizeSub">Use these to check that your photos are sharp enough at real size.</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th data-i18n="thModel">Model</th><th data-i18n="thSize">Board size</th><th data-i18n="thBleed">Including bleed</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Moodus Give S</th><td>240 × 350 mm</td><td>260 × 370 mm</td></tr>
+        <tr><th scope="row">Moodus Give M</th><td>400 × 600 mm</td><td>420 × 620 mm</td></tr>
+        <tr><th scope="row">Moodus Give+ S</th><td>280 × 370 mm</td><td>300 × 390 mm</td></tr>
+        <tr><th scope="row">Moodus Give+ M</th><td>400 × 600 mm</td><td>420 × 620 mm</td></tr>
+        <tr><th scope="row">Moodus Give+ Wallmount</th><td>400 × 600 mm</td><td>420 × 620 mm</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 data-i18n="appLabel">Approval</h2>
+  <ul class="items">
+    <li class="item">
+      <span class="tick" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+      <div class="txt"><div class="eyebrow"><span data-i18n="a1n">Check it yourself</span></div><p class="cap" data-i18n="a1"></p></div>
+    </li>
+    <li class="item">
+      <span class="tick" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+      <div class="txt"><div class="eyebrow"><span data-i18n="a2n">Approve in writing</span></div><p class="cap" data-i18n="a2"></p></div>
+    </li>
+    <li class="item">
+      <span class="tick" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+      <div class="txt"><div class="eyebrow"><span data-i18n="a3n">Colour on print</span></div><p class="cap" data-i18n="a3"></p></div>
+    </li>
+    <li class="item">
+      <span class="tick" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+      <div class="txt"><div class="eyebrow"><span data-i18n="a4n">Low-resolution images</span></div><p class="cap" data-i18n="a4"></p></div>
+    </li>
+  </ul>
+
+  <div class="done">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+    <p data-i18n="done">Once you approve, your board goes straight into production.</p>
+  </div>
+
+  <footer><span data-i18n="foot">Moodus — promoboard design · Questions? <a href="mailto:design@moodus.com">design@moodus.com</a></span></footer>
+</div>
+
+<script>
+  const STR = {
+    en:{
+      kicker:"Promoboard design",
+      title:"Promoboard design rules",
+      subtitle:"What our in-house designer needs from you to design your Moodus board.",
+      revLabel:"One revision round",
+      rev:"You receive a design proposal, and you get one round of corrections on it. Send all your remarks together in a single message. Each additional revision round is €25.",
+      start:'Send everything in one email to <a href="mailto:design@moodus.com">design@moodus.com</a>.',
+      needLabel:"What we need from you",
+      needSub:"We start designing once the required items are in. Anything missing pauses your board.",
+      required:"Required",
+      optional:"If you have it",
+      i1n:"Logo",
+      i1:'Your logo as a <b>vector file</b>: .ai, .eps, .svg or a vector PDF. <span class="gloss">A PNG or JPG only works if it is at least 300 dpi at the real board size — see the sizes below.</span>',
+      i2n:"Text",
+      i2:'All text, <b>final and proofread</b>, in the language it must be printed in. <span class="gloss">Type it in the email. We place the text exactly as you send it — we do not rewrite or correct it.</span>',
+      i3n:"Board model",
+      i3:'Which <b>model</b> you ordered and <b>how many</b> boards. <span class="gloss">Give S, Give M, Give+ S, Give+ M or Give+ Wallmount.</span>',
+      i4n:"Brand colours",
+      i4:'Your colour codes, preferably <b>CMYK or Pantone</b>. <span class="gloss">RGB or hex codes also work, but printed colour can shift slightly from what you see on screen.</span>',
+      i5n:"Fonts",
+      i5:'The <b>font files</b>, or the name of the font. <span class="gloss">Without them we pick the closest match ourselves.</span>',
+      i6n:"Photos",
+      i6:'Original photos at <b>300 dpi at real size</b>, ideally around <b>4000 px</b> on the longest side. <span class="gloss">Send the originals from the camera or the photographer, not a version that has passed through chat or social media.</span>',
+      i7n:"QR code",
+      i7:'The <b>link</b> the QR code must point to. <span class="gloss">Send the web address, not a picture of a QR code — we generate a clean one at the right size.</span>',
+      i8n:"Style direction",
+      i8:'Anything that shows what you like: <b>examples, photos of other boards, your website</b>. <span class="gloss">The clearer your direction, the closer the first proposal lands.</span>',
+      incLabel:"What is included",
+      incSub:"The design process covers the design itself. It does not cover correcting or improving the material you send us.",
+      incYes:"Included", incNo:"Not included",
+      in1:"Designing your board with the text, images and logo you send",
+      in2:"One revision round, if you want to change text or images",
+      in3:"A print-ready file with bleed, safe zone and cutting contour",
+      ex1:"Checking your text for spelling or typing errors",
+      ex2:"Retouching or editing your images",
+      costLabel:"Extra work",
+      costSub:"Only charged if you ask for it. We always confirm before we start.",
+      thWork:"Work", thPrice:"Price",
+      c1:"Additional revision round", c1p:"€25",
+      c2:"Retouching images", c2p:"€25 per half hour",
+      a4n:"Low-resolution images",
+      a4:'We tell you if an image is <b>too low-resolution</b> for the board size. <span class="gloss">If you choose to print it anyway, we are not responsible for the printed result.</span>',
+      noLabel:"What we cannot use",
+      noSub:"These look fine on a screen but fall apart at print size. If this is all you have, let us know and we will tell you what is possible.",
+      no1:"A logo copied or downloaded from a website",
+      no2:"Screenshots, or photos of a printed logo",
+      no3:"Images sent through WhatsApp, Facebook or Instagram",
+      no4:"A logo pasted into Word, PowerPoint or a PDF",
+      no5:"Images under 300 dpi at the real board size",
+      weLabel:"What we take care of",
+      weSub:"You do not have to prepare anything for print. Our designer sets all of this up.",
+      w1n:"Layout", w1:"Composition, sizing and balance across the whole board.",
+      w2n:"Bleed &amp; safe zone", w2:"10 mm bleed around the board, 10 mm safe margin inside it.",
+      w3n:"Cutting contour", w3:"The cut line and the terminal opening, positioned exactly.",
+      w4n:"Print file", w4:"Colour conversion and a production-ready file for the printer.",
+      sizeLabel:"Board sizes",
+      sizeSub:"Use these to check that your photos are sharp enough at real size.",
+      thModel:"Model", thSize:"Board size", thBleed:"Including bleed",
+      appLabel:"Approval",
+      a1n:"Check it yourself",
+      a1:'Read the proposal carefully: <b>names, amounts, spelling, the QR link</b>. <span class="gloss">You are responsible for the content of the text.</span>',
+      a2n:"Approve in writing",
+      a2:'We only print after your <b>written approval</b> by email. <span class="gloss">After approval the file goes to the printer and can no longer be changed.</span>',
+      a3n:"Colour on print",
+      a3:'Printed colour can differ <b>slightly</b> from your screen. <span class="gloss">This is normal in printing and is not a reason for a reprint.</span>',
+      done:"Once you approve, your board goes straight into production.",
+      foot:'Moodus — promoboard design · Questions? <a href="mailto:design@moodus.com">design@moodus.com</a>'
+    },
+    nl:{
+      kicker:"Promoboard-ontwerp",
+      title:"Regels voor het promoboard-ontwerp",
+      subtitle:"Wat onze eigen designer van je nodig heeft om jouw Moodus-bord te ontwerpen.",
+      revLabel:"Eén correctieronde",
+      rev:"Je krijgt een ontwerpvoorstel en daarop één correctieronde. Stuur al je opmerkingen in één bericht tegelijk. Elke extra correctieronde kost €25.",
+      start:'Stuur alles in één e-mail naar <a href="mailto:design@moodus.com">design@moodus.com</a>.',
+      needLabel:"Wat we van je nodig hebben",
+      needSub:"We beginnen met ontwerpen zodra de verplichte onderdelen binnen zijn. Ontbreekt er iets, dan staat je bord stil.",
+      required:"Verplicht",
+      optional:"Als je het hebt",
+      i1n:"Logo",
+      i1:'Je logo als <b>vectorbestand</b>: .ai, .eps, .svg of een vector-PDF. <span class="gloss">Een PNG of JPG kan alleen als die minimaal 300 dpi is op het echte bordformaat — zie de maten hieronder.</span>',
+      i2n:"Tekst",
+      i2:'Alle tekst, <b>definitief en nagelezen</b>, in de taal waarin het gedrukt moet worden. <span class="gloss">Typ het in de e-mail. Wij plaatsen de tekst precies zoals je die aanlevert — we herschrijven of corrigeren niets.</span>',
+      i3n:"Bordmodel",
+      i3:'Welk <b>model</b> je hebt besteld en <b>hoeveel</b> borden. <span class="gloss">Give S, Give M, Give+ S, Give+ M of Give+ Wallmount.</span>',
+      i4n:"Huisstijlkleuren",
+      i4:'Je kleurcodes, bij voorkeur <b>CMYK of Pantone</b>. <span class="gloss">RGB of hex kan ook, maar de gedrukte kleur kan licht afwijken van wat je op je scherm ziet.</span>',
+      i5n:"Lettertypes",
+      i5:'De <b>fontbestanden</b>, of de naam van het lettertype. <span class="gloss">Zonder deze kiezen wij zelf het best passende alternatief.</span>',
+      i6n:"Foto's",
+      i6:'Originele foto\'s op <b>300 dpi op ware grootte</b>, idealiter zo\'n <b>4000 px</b> aan de langste zijde. <span class="gloss">Stuur de originelen van de camera of de fotograaf, niet een versie die via chat of social media is gegaan.</span>',
+      i7n:"QR-code",
+      i7:'De <b>link</b> waar de QR-code naartoe moet. <span class="gloss">Stuur het webadres, geen plaatje van een QR-code — wij maken een scherpe code op het juiste formaat.</span>',
+      i8n:"Stijlrichting",
+      i8:'Alles wat laat zien wat je mooi vindt: <b>voorbeelden, foto\'s van andere borden, je website</b>. <span class="gloss">Hoe duidelijker je richting, hoe dichterbij het eerste voorstel komt.</span>',
+      incLabel:"Wat is inbegrepen",
+      incSub:"Het ontwerpproces dekt het ontwerp zelf. Het dekt niet het corrigeren of verbeteren van het materiaal dat je aanlevert.",
+      incYes:"Inbegrepen", incNo:"Niet inbegrepen",
+      in1:"Het ontwerpen van je bord met de tekst, beelden en het logo die je aanlevert",
+      in2:"Eén correctieronde, als je tekst of beeld wilt wijzigen",
+      in3:"Een drukklaar bestand met afloop, veilige zone en snijcontour",
+      ex1:"Je tekst controleren op spelling of typefouten",
+      ex2:"Je beelden retoucheren of bewerken",
+      costLabel:"Extra werk",
+      costSub:"Wordt alleen gerekend als je erom vraagt. We bevestigen het altijd vooraf.",
+      thWork:"Werk", thPrice:"Prijs",
+      c1:"Extra correctieronde", c1p:"€25",
+      c2:"Beelden retoucheren", c2p:"€25 per half uur",
+      a4n:"Beelden met lage resolutie",
+      a4:'We laten het je weten als een beeld <b>te lage resolutie</b> heeft voor het bordformaat. <span class="gloss">Kies je er toch voor om het te drukken, dan zijn wij niet verantwoordelijk voor het drukresultaat.</span>',
+      noLabel:"Wat we niet kunnen gebruiken",
+      noSub:"Dit ziet er op een scherm prima uit, maar valt uit elkaar op drukformaat. Heb je alleen dit? Laat het weten, dan vertellen we je wat er mogelijk is.",
+      no1:"Een logo gekopieerd of gedownload van een website",
+      no2:"Screenshots of foto's van een gedrukt logo",
+      no3:"Afbeeldingen verstuurd via WhatsApp, Facebook of Instagram",
+      no4:"Een logo geplakt in Word, PowerPoint of een PDF",
+      no5:"Afbeeldingen onder 300 dpi op het echte bordformaat",
+      weLabel:"Wat wij regelen",
+      weSub:"Je hoeft zelf niets drukklaar te maken. Onze designer zet dit allemaal op.",
+      w1n:"Opmaak", w1:"Compositie, formaten en balans over het hele bord.",
+      w2n:"Afloop &amp; veilige zone", w2:"10 mm afloop rondom het bord, 10 mm veilige marge daarbinnen.",
+      w3n:"Snijcontour", w3:"De snijlijn en de uitsparing voor de terminal, exact op positie.",
+      w4n:"Drukbestand", w4:"Kleurconversie en een drukklaar bestand voor de drukker.",
+      sizeLabel:"Bordformaten",
+      sizeSub:"Gebruik deze om te controleren of je foto's scherp genoeg zijn op ware grootte.",
+      thModel:"Model", thSize:"Bordformaat", thBleed:"Inclusief afloop",
+      appLabel:"Akkoord",
+      a1n:"Controleer zelf",
+      a1:'Lees het voorstel goed na: <b>namen, bedragen, spelling, de QR-link</b>. <span class="gloss">Jij bent verantwoordelijk voor de inhoud van de tekst.</span>',
+      a2n:"Geef schriftelijk akkoord",
+      a2:'We drukken pas na jouw <b>schriftelijke akkoord</b> per e-mail. <span class="gloss">Na akkoord gaat het bestand naar de drukker en kan het niet meer worden aangepast.</span>',
+      a3n:"Kleur in druk",
+      a3:'Gedrukte kleur kan <b>licht</b> afwijken van je scherm. <span class="gloss">Dat is normaal bij drukwerk en geen reden voor een herdruk.</span>',
+      done:"Zodra je akkoord geeft, gaat je bord direct in productie.",
+      foot:'Moodus — promoboard-ontwerp · Vragen? <a href="mailto:design@moodus.com">design@moodus.com</a>'
+    },
+    fr:{
+      kicker:"Conception du promoboard",
+      title:"Règles de conception du promoboard",
+      subtitle:"Ce dont notre designer interne a besoin pour concevoir votre panneau Moodus.",
+      revLabel:"Un tour de correction",
+      rev:"Vous recevez une proposition de design, avec un seul tour de correction. Envoyez toutes vos remarques ensemble, en un seul message. Chaque tour de correction supplémentaire coûte 25 €.",
+      start:'Envoyez tout en un seul e-mail à <a href="mailto:design@moodus.com">design@moodus.com</a>.',
+      needLabel:"Ce dont nous avons besoin",
+      needSub:"Nous commençons dès que les éléments obligatoires sont reçus. Tout élément manquant met votre panneau en attente.",
+      required:"Obligatoire",
+      optional:"Si vous l'avez",
+      i1n:"Logo",
+      i1:'Votre logo en <b>fichier vectoriel</b> : .ai, .eps, .svg ou un PDF vectoriel. <span class="gloss">Un PNG ou JPG ne convient que s\'il fait au moins 300 dpi à la taille réelle du panneau — voir les tailles ci-dessous.</span>',
+      i2n:"Textes",
+      i2:'Tous les textes, <b>définitifs et relus</b>, dans la langue d\'impression. <span class="gloss">Écrivez-les dans l\'e-mail. Nous les plaçons exactement tels que vous les envoyez — nous ne les réécrivons ni ne les corrigeons.</span>',
+      i3n:"Modèle de panneau",
+      i3:'Le <b>modèle</b> commandé et le <b>nombre</b> de panneaux. <span class="gloss">Give S, Give M, Give+ S, Give+ M ou Give+ Wallmount.</span>',
+      i4n:"Couleurs de la marque",
+      i4:'Vos codes couleur, de préférence en <b>CMJN ou Pantone</b>. <span class="gloss">Le RVB ou l\'hexadécimal fonctionne aussi, mais la couleur imprimée peut différer légèrement de votre écran.</span>',
+      i5n:"Polices",
+      i5:'Les <b>fichiers de police</b>, ou le nom de la police. <span class="gloss">Sans cela, nous choisissons nous-mêmes l\'équivalent le plus proche.</span>',
+      i6n:"Photos",
+      i6:'Des photos originales en <b>300 dpi à taille réelle</b>, idéalement environ <b>4000 px</b> sur le côté le plus long. <span class="gloss">Envoyez les originaux de l\'appareil ou du photographe, pas une version passée par une messagerie ou les réseaux sociaux.</span>',
+      i7n:"Code QR",
+      i7:'Le <b>lien</b> vers lequel le code QR doit pointer. <span class="gloss">Envoyez l\'adresse web, pas une image de code QR — nous en générons un net à la bonne taille.</span>',
+      i8n:"Direction visuelle",
+      i8:'Tout ce qui montre vos goûts : <b>exemples, photos d\'autres panneaux, votre site web</b>. <span class="gloss">Plus la direction est claire, plus la première proposition sera juste.</span>',
+      incLabel:"Ce qui est inclus",
+      incSub:"Le processus couvre la conception elle-même. Il ne couvre pas la correction ni l'amélioration du matériel que vous envoyez.",
+      incYes:"Inclus", incNo:"Non inclus",
+      in1:"La conception de votre panneau avec les textes, les images et le logo que vous envoyez",
+      in2:"Un tour de correction, si vous souhaitez modifier un texte ou une image",
+      in3:"Un fichier prêt à imprimer avec fond perdu, zone de sécurité et tracé de découpe",
+      ex1:"La relecture de vos textes (orthographe, fautes de frappe)",
+      ex2:"La retouche ou la modification de vos images",
+      costLabel:"Travail supplémentaire",
+      costSub:"Facturé uniquement si vous le demandez. Nous confirmons toujours avant de commencer.",
+      thWork:"Prestation", thPrice:"Prix",
+      c1:"Tour de correction supplémentaire", c1p:"25 €",
+      c2:"Retouche d'images", c2p:"25 € par demi-heure",
+      a4n:"Images en basse résolution",
+      a4:'Nous vous pr\u00E9venons si une image est <b>en r\u00E9solution trop faible</b> pour la taille du panneau. <span class="gloss">Si vous choisissez de l\'imprimer malgr\u00E9 tout, nous ne sommes pas responsables du r\u00E9sultat imprim\u00E9.</span>',
+      noLabel:"Ce que nous ne pouvons pas utiliser",
+      noSub:"Cela paraît correct à l'écran mais se dégrade à la taille d'impression. Si c'est tout ce dont vous disposez, dites-le-nous et nous vous indiquerons ce qui est possible.",
+      no1:"Un logo copié ou téléchargé depuis un site web",
+      no2:"Des captures d'écran ou des photos d'un logo imprimé",
+      no3:"Des images envoyées via WhatsApp, Facebook ou Instagram",
+      no4:"Un logo collé dans Word, PowerPoint ou un PDF",
+      no5:"Des images sous 300 dpi à la taille réelle du panneau",
+      weLabel:"Ce dont nous nous chargeons",
+      weSub:"Vous n'avez rien à préparer pour l'impression. Notre designer s'occupe de tout cela.",
+      w1n:"Mise en page", w1:"Composition, tailles et équilibre sur l'ensemble du panneau.",
+      w2n:"Fond perdu &amp; zone de sécurité", w2:"10 mm de fond perdu autour du panneau, 10 mm de marge de sécurité à l'intérieur.",
+      w3n:"Tracé de découpe", w3:"La ligne de découpe et l'ouverture du terminal, positionnées exactement.",
+      w4n:"Fichier d'impression", w4:"Conversion des couleurs et fichier prêt à imprimer pour l'imprimeur.",
+      sizeLabel:"Tailles des panneaux",
+      sizeSub:"Utilisez-les pour vérifier que vos photos sont assez nettes à taille réelle.",
+      thModel:"Modèle", thSize:"Taille du panneau", thBleed:"Fond perdu inclus",
+      appLabel:"Validation",
+      a1n:"Vérifiez vous-même",
+      a1:'Relisez attentivement la proposition : <b>noms, montants, orthographe, lien du QR</b>. <span class="gloss">Vous êtes responsable du contenu des textes.</span>',
+      a2n:"Validez par écrit",
+      a2:'Nous imprimons uniquement après votre <b>accord écrit</b> par e-mail. <span class="gloss">Après validation, le fichier part à l\'imprimeur et ne peut plus être modifié.</span>',
+      a3n:"Couleur à l'impression",
+      a3:'La couleur imprimée peut <b>légèrement</b> différer de votre écran. <span class="gloss">C\'est normal en impression et ne justifie pas une réimpression.</span>',
+      done:"Dès votre validation, votre panneau part en production.",
+      foot:'Moodus — conception de promoboards · Des questions ? <a href="mailto:design@moodus.com">design@moodus.com</a>'
+    },
+    de:{
+      kicker:"Promoboard-Design",
+      title:"Regeln für das Promoboard-Design",
+      subtitle:"Was unsere hauseigene Designerin oder unser Designer von dir braucht, um dein Moodus-Board zu gestalten.",
+      revLabel:"Eine Korrekturrunde",
+      rev:"Du erhältst einen Designvorschlag und dazu eine Korrekturrunde. Schicke alle Anmerkungen gesammelt in einer Nachricht. Jede weitere Korrekturrunde kostet 25 €.",
+      start:'Schicke alles in einer E-Mail an <a href="mailto:design@moodus.com">design@moodus.com</a>.',
+      needLabel:"Was wir von dir brauchen",
+      needSub:"Wir starten mit dem Design, sobald die Pflichtangaben da sind. Fehlt etwas, pausiert dein Board.",
+      required:"Pflicht",
+      optional:"Falls vorhanden",
+      i1n:"Logo",
+      i1:'Dein Logo als <b>Vektordatei</b>: .ai, .eps, .svg oder ein Vektor-PDF. <span class="gloss">Ein PNG oder JPG geht nur, wenn es mindestens 300 dpi in der echten Board-Größe hat — siehe die Größen unten.</span>',
+      i2n:"Texte",
+      i2:'Alle Texte, <b>final und Korrektur gelesen</b>, in der Sprache, in der gedruckt wird. <span class="gloss">Schreibe sie in die E-Mail. Wir setzen die Texte genau so, wie du sie lieferst — wir schreiben nichts um und korrigieren nichts.</span>',
+      i3n:"Board-Modell",
+      i3:'Welches <b>Modell</b> du bestellt hast und <b>wie viele</b> Boards. <span class="gloss">Give S, Give M, Give+ S, Give+ M oder Give+ Wallmount.</span>',
+      i4n:"Markenfarben",
+      i4:'Deine Farbwerte, am besten in <b>CMYK oder Pantone</b>. <span class="gloss">RGB oder Hex geht auch, aber die gedruckte Farbe kann leicht von deinem Bildschirm abweichen.</span>',
+      i5n:"Schriften",
+      i5:'Die <b>Schriftdateien</b> oder den Namen der Schrift. <span class="gloss">Ohne sie wählen wir selbst die passendste Alternative.</span>',
+      i6n:"Fotos",
+      i6:'Originalfotos mit <b>300 dpi in Originalgröße</b>, idealerweise etwa <b>4000 px</b> an der längsten Seite. <span class="gloss">Schicke die Originale von der Kamera oder vom Fotografen, nicht eine Version, die durch Chat oder Social Media gelaufen ist.</span>',
+      i7n:"QR-Code",
+      i7:'Den <b>Link</b>, auf den der QR-Code zeigen soll. <span class="gloss">Schicke die Webadresse, kein Bild eines QR-Codes — wir erzeugen einen sauberen in der richtigen Größe.</span>',
+      i8n:"Stilrichtung",
+      i8:'Alles, was zeigt, was dir gefällt: <b>Beispiele, Fotos anderer Boards, deine Website</b>. <span class="gloss">Je klarer die Richtung, desto näher trifft der erste Vorschlag.</span>',
+      incLabel:"Was enthalten ist",
+      incSub:"Der Designprozess umfasst die Gestaltung selbst. Nicht enthalten ist das Korrigieren oder Verbessern des Materials, das du lieferst.",
+      incYes:"Enthalten", incNo:"Nicht enthalten",
+      in1:"Die Gestaltung deines Boards mit den Texten, Bildern und dem Logo, die du lieferst",
+      in2:"Eine Korrekturrunde, wenn du Text oder Bilder ändern möchtest",
+      in3:"Eine druckfertige Datei mit Anschnitt, Sicherheitszone und Schneidkontur",
+      ex1:"Deine Texte auf Rechtschreib- oder Tippfehler prüfen",
+      ex2:"Deine Bilder retuschieren oder bearbeiten",
+      costLabel:"Zusatzarbeit",
+      costSub:"Wird nur berechnet, wenn du danach fragst. Wir bestätigen es immer vorher.",
+      thWork:"Leistung", thPrice:"Preis",
+      c1:"Weitere Korrekturrunde", c1p:"25 €",
+      c2:"Bildretusche", c2p:"25 € pro halbe Stunde",
+      a4n:"Bilder mit niedriger Auflösung",
+      a4:'Wir sagen dir Bescheid, wenn ein Bild f\u00FCr die Board-Gr\u00F6\u00DFe <b>zu niedrig aufgel\u00F6st</b> ist. <span class="gloss">Wenn du es trotzdem drucken l\u00E4sst, \u00FCbernehmen wir keine Verantwortung f\u00FCr das Druckergebnis.</span>',
+      noLabel:"Was wir nicht verwenden können",
+      noSub:"Auf dem Bildschirm sieht das gut aus, in Druckgröße fällt es auseinander. Wenn du nur das hast, sag Bescheid — wir sagen dir, was möglich ist.",
+      no1:"Ein Logo, das von einer Website kopiert oder geladen wurde",
+      no2:"Screenshots oder Fotos eines gedruckten Logos",
+      no3:"Bilder, die über WhatsApp, Facebook oder Instagram verschickt wurden",
+      no4:"Ein Logo, das in Word, PowerPoint oder ein PDF eingefügt wurde",
+      no5:"Bilder unter 300 dpi in der echten Board-Größe",
+      weLabel:"Was wir übernehmen",
+      weSub:"Du musst nichts druckfertig vorbereiten. Das richten wir alles ein.",
+      w1n:"Layout", w1:"Komposition, Größen und Balance über das ganze Board.",
+      w2n:"Anschnitt &amp; Sicherheitszone", w2:"10 mm Anschnitt rundum, 10 mm Sicherheitsabstand nach innen.",
+      w3n:"Schneidkontur", w3:"Die Schnittlinie und die Aussparung für das Terminal, exakt positioniert.",
+      w4n:"Druckdatei", w4:"Farbkonvertierung und eine druckfertige Datei für die Druckerei.",
+      sizeLabel:"Board-Größen",
+      sizeSub:"Damit kannst du prüfen, ob deine Fotos in Originalgröße scharf genug sind.",
+      thModel:"Modell", thSize:"Board-Größe", thBleed:"Inklusive Anschnitt",
+      appLabel:"Freigabe",
+      a1n:"Selbst prüfen",
+      a1:'Lies den Vorschlag genau: <b>Namen, Beträge, Rechtschreibung, QR-Link</b>. <span class="gloss">Für den Inhalt der Texte bist du verantwortlich.</span>',
+      a2n:"Schriftlich freigeben",
+      a2:'Wir drucken erst nach deiner <b>schriftlichen Freigabe</b> per E-Mail. <span class="gloss">Nach der Freigabe geht die Datei in den Druck und kann nicht mehr geändert werden.</span>',
+      a3n:"Farbe im Druck",
+      a3:'Die gedruckte Farbe kann <b>leicht</b> von deinem Bildschirm abweichen. <span class="gloss">Das ist im Druck normal und kein Grund für einen Nachdruck.</span>',
+      done:"Sobald du freigibst, geht dein Board direkt in Produktion.",
+      foot:'Moodus — Promoboard-Design · Fragen? <a href="mailto:design@moodus.com">design@moodus.com</a>'
+    },
+    it:{
+      kicker:"Design del promoboard",
+      title:"Regole per il design del promoboard",
+      subtitle:"Ciò di cui il nostro designer interno ha bisogno per progettare il tuo pannello Moodus.",
+      revLabel:"Un giro di correzioni",
+      rev:"Ricevi una proposta di design e su questa hai un solo giro di correzioni. Invia tutte le tue osservazioni insieme, in un unico messaggio. Ogni giro di correzioni aggiuntivo costa 25 €.",
+      start:'Invia tutto in un\'unica e-mail a <a href="mailto:design@moodus.com">design@moodus.com</a>.',
+      needLabel:"Cosa ci serve da te",
+      needSub:"Iniziamo a progettare appena arrivano gli elementi obbligatori. Se manca qualcosa, il tuo pannello resta fermo.",
+      required:"Obbligatorio",
+      optional:"Se ce l'hai",
+      i1n:"Logo",
+      i1:'Il tuo logo come <b>file vettoriale</b>: .ai, .eps, .svg o un PDF vettoriale. <span class="gloss">Un PNG o JPG va bene solo se è almeno 300 dpi alla dimensione reale del pannello — vedi le misure qui sotto.</span>',
+      i2n:"Testi",
+      i2:'Tutti i testi, <b>definitivi e riletti</b>, nella lingua in cui verranno stampati. <span class="gloss">Scrivili nell\'e-mail. Li inseriamo esattamente come li invii — non li riscriviamo né li correggiamo.</span>',
+      i3n:"Modello di pannello",
+      i3:'Quale <b>modello</b> hai ordinato e <b>quanti</b> pannelli. <span class="gloss">Give S, Give M, Give+ S, Give+ M o Give+ Wallmount.</span>',
+      i4n:"Colori del marchio",
+      i4:'I tuoi codici colore, preferibilmente in <b>CMYK o Pantone</b>. <span class="gloss">Anche RGB o esadecimale vanno bene, ma il colore stampato può differire leggermente da quello a schermo.</span>',
+      i5n:"Font",
+      i5:'I <b>file dei font</b>, oppure il nome del carattere. <span class="gloss">Senza di essi scegliamo noi l\'alternativa più simile.</span>',
+      i6n:"Foto",
+      i6:'Foto originali a <b>300 dpi a dimensione reale</b>, idealmente circa <b>4000 px</b> sul lato più lungo. <span class="gloss">Invia gli originali della fotocamera o del fotografo, non una versione passata da chat o social.</span>',
+      i7n:"Codice QR",
+      i7:'Il <b>link</b> a cui deve puntare il codice QR. <span class="gloss">Invia l\'indirizzo web, non un\'immagine di un QR — ne generiamo uno nitido nella misura giusta.</span>',
+      i8n:"Direzione stilistica",
+      i8:'Tutto ciò che mostra i tuoi gusti: <b>esempi, foto di altri pannelli, il tuo sito</b>. <span class="gloss">Più la direzione è chiara, più la prima proposta sarà vicina al risultato.</span>',
+      incLabel:"Cosa è incluso",
+      incSub:"Il processo copre la progettazione vera e propria. Non copre la correzione o il miglioramento del materiale che ci invii.",
+      incYes:"Incluso", incNo:"Non incluso",
+      in1:"La progettazione del pannello con i testi, le immagini e il logo che invii",
+      in2:"Un giro di correzioni, se vuoi cambiare testi o immagini",
+      in3:"Un file pronto per la stampa con abbondanza, area di sicurezza e tracciato di taglio",
+      ex1:"La revisione dei tuoi testi per errori di ortografia o battitura",
+      ex2:"Il ritocco o la modifica delle tue immagini",
+      costLabel:"Lavoro extra",
+      costSub:"Addebitato solo se lo richiedi. Confermiamo sempre prima di iniziare.",
+      thWork:"Prestazione", thPrice:"Prezzo",
+      c1:"Giro di correzioni aggiuntivo", c1p:"25 €",
+      c2:"Ritocco immagini", c2p:"25 € per mezz'ora",
+      a4n:"Immagini a bassa risoluzione",
+      a4:'Ti avvisiamo se un\'immagine ha <b>una risoluzione troppo bassa</b> per la dimensione del pannello. <span class="gloss">Se scegli comunque di stamparla, non siamo responsabili del risultato di stampa.</span>',
+      noLabel:"Cosa non possiamo usare",
+      noSub:"A schermo sembrano a posto, ma alla dimensione di stampa si sgranano. Se hai solo questo, faccelo sapere e ti diremo cosa è possibile.",
+      no1:"Un logo copiato o scaricato da un sito web",
+      no2:"Screenshot o foto di un logo stampato",
+      no3:"Immagini inviate tramite WhatsApp, Facebook o Instagram",
+      no4:"Un logo incollato in Word, PowerPoint o un PDF",
+      no5:"Immagini sotto i 300 dpi alla dimensione reale del pannello",
+      weLabel:"Di cosa ci occupiamo noi",
+      weSub:"Non devi preparare nulla per la stampa. Ci pensa il nostro designer.",
+      w1n:"Impaginazione", w1:"Composizione, dimensioni ed equilibrio su tutto il pannello.",
+      w2n:"Abbondanza &amp; area di sicurezza", w2:"10 mm di abbondanza attorno al pannello, 10 mm di margine di sicurezza all'interno.",
+      w3n:"Tracciato di taglio", w3:"La linea di taglio e l'apertura per il terminale, posizionate con precisione.",
+      w4n:"File di stampa", w4:"Conversione dei colori e file pronto per la stampa.",
+      sizeLabel:"Dimensioni dei pannelli",
+      sizeSub:"Usale per verificare che le tue foto siano abbastanza nitide a dimensione reale.",
+      thModel:"Modello", thSize:"Dimensione pannello", thBleed:"Abbondanza inclusa",
+      appLabel:"Approvazione",
+      a1n:"Controlla tu stesso",
+      a1:'Leggi la proposta con attenzione: <b>nomi, importi, ortografia, link del QR</b>. <span class="gloss">Sei responsabile del contenuto dei testi.</span>',
+      a2n:"Approva per iscritto",
+      a2:'Stampiamo solo dopo la tua <b>approvazione scritta</b> via e-mail. <span class="gloss">Dopo l\'approvazione il file va in stampa e non può più essere modificato.</span>',
+      a3n:"Colore in stampa",
+      a3:'Il colore stampato può differire <b>leggermente</b> da quello a schermo. <span class="gloss">È normale nella stampa e non è motivo di ristampa.</span>',
+      done:"Appena approvi, il tuo pannello va direttamente in produzione.",
+      foot:'Moodus — design dei promoboard · Domande? <a href="mailto:design@moodus.com">design@moodus.com</a>'
+    }
+  };
+
+  function setLang(lang){
+    const d = STR[lang] || STR.en;
+    document.documentElement.setAttribute('lang', lang);
+    document.querySelectorAll('[data-i18n]').forEach(el=>{ el.innerHTML = d[el.dataset.i18n] ?? el.innerHTML; });
+    document.querySelectorAll('.langbtn').forEach(b=>{ b.setAttribute('aria-pressed', String(b.dataset.lang===lang)); });
+  }
+  setLang('en');
+</script>
