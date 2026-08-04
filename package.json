@@ -1,0 +1,13 @@
+{
+  "name": "moodus-promoboard-design-rules",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Client-facing design rules page for Moodus promoboards (EN/NL/FR/DE/IT)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
