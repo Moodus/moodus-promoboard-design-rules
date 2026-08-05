@@ -34,14 +34,15 @@
   .brand .model{display:flex;align-items:center;gap:14px;}
   .brand .model::before{content:"";width:1px;height:16px;background:var(--hair);}
 
-  /* language switch */
-  .langs{display:flex;gap:2px;max-width:100%;overflow-x:auto;}
-  .langbtn{appearance:none;border:0;background:transparent;color:var(--muted);cursor:pointer;
-    font:inherit;font-weight:600;font-size:13px;padding:7px 13px;border-radius:999px;white-space:nowrap;
-    transition:background .15s,color .15s;}
-  .langbtn:hover{color:var(--ink);background:var(--surface-2);}
-  .langbtn[aria-pressed="true"]{background:var(--accent);color:#fff;}
-  .langbtn:focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px;}
+  /* language dropdown */
+  .langsel{appearance:none;border:1px solid var(--hair);background-color:var(--surface);color:var(--ink);
+    font:inherit;font-size:13px;font-weight:600;padding:7px 32px 7px 13px;border-radius:999px;cursor:pointer;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235f6b7d' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 11px center;background-size:11px;}
+  .langsel:hover{border-color:#cfd8e6;}
+  .langsel:focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px;}
+  .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+    clip:rect(0 0 0 0);white-space:nowrap;border:0;}
 
   /* hero */
   .hero{padding:clamp(56px,10vw,104px) 0 0;}
@@ -50,19 +51,9 @@
   .sub{margin:26px 0 0;color:var(--ink);font-size:clamp(17px,2.2vw,20px);line-height:1.65;
     max-width:44ch;text-wrap:pretty;}
 
-  /* mail call to action */
-  .start{display:flex;align-items:center;gap:18px;margin:44px 0 0;padding:22px 26px;
-    background:var(--navy);color:#fff;border-radius:var(--radius);}
-  .start .pw{flex:none;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;
-    background:rgba(255,255,255,.14);color:#fff;}
-  .start p{margin:0;font-weight:600;font-size:16.5px;line-height:1.6;}
-  .start a{color:#fff;text-decoration:underline;text-underline-offset:3px;
-    text-decoration-color:rgba(255,255,255,.45);}
-  .start a:hover{text-decoration-color:#fff;}
-
   /* note */
   .note{display:flex;gap:16px;background:var(--note-bg);border:1px solid var(--note-bd);
-    color:var(--note-ink);border-radius:var(--radius);padding:22px 24px;margin:24px 0 0;}
+    color:var(--note-ink);border-radius:var(--radius);padding:22px 24px;margin:44px 0 0;}
   .note svg{flex:none;margin-top:5px}
   .note .lbl{display:block;font-weight:800;letter-spacing:.01em;margin-bottom:4px;font-size:15px;}
   .note p{margin:0;font-size:15.5px;line-height:1.7;color:var(--note-ink);}
@@ -94,6 +85,13 @@
   .cap .gloss{display:block;font-weight:400;color:var(--muted);font-size:15.5px;
     line-height:1.65;margin-top:10px;}
 
+  /* the last item of the list: where to send it all */
+  li.item.send{margin-top:16px;padding:26px 24px;border-radius:var(--radius);
+    background:rgba(41,121,255,.05);border:1px solid rgba(41,121,255,.18);}
+  .item.send .tick{background:var(--accent);color:#fff;}
+  .item.send .cap{font-weight:600;}
+  .item.send a{color:var(--accent-ink);font-weight:700;text-decoration:underline;text-underline-offset:3px;}
+
   /* reject list */
   .reject{margin:32px 0 0;padding:26px 28px;border-radius:var(--radius);
     background:var(--bad-bg);border:1px solid var(--bad-bd);}
@@ -103,9 +101,11 @@
   .reject svg{flex:none;color:var(--bad);margin-top:5px;}
 
   /* included / not included */
-  .split{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-top:32px;}
+  .grouplabel{margin:34px 0 16px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    font-weight:800;color:var(--muted);}
+  .grouplabel + .cards{margin-top:0;}
   .list{background:var(--surface);border:1px solid var(--hair);border-radius:var(--radius);
-    padding:24px 26px;}
+    padding:24px 26px;margin-top:20px;}
   .list h3{margin:0 0 18px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;
     font-weight:800;color:var(--muted);}
   .list ul{list-style:none;margin:0;padding:0;display:grid;gap:15px;}
@@ -124,6 +124,19 @@
     padding:24px 26px;}
   .card h3{margin:0 0 8px;font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.01em;}
   .card p{margin:0;font-size:15.5px;line-height:1.65;color:var(--muted);}
+
+  /* collapsible section — the size table is reference material, folded away by default */
+  .disclosure{margin:var(--gap) 0 0;}
+  .disclosure > summary{list-style:none;cursor:pointer;display:flex;align-items:center;
+    justify-content:space-between;gap:16px;}
+  .disclosure > summary::-webkit-details-marker{display:none;}
+  .disclosure > summary:focus-visible{outline:2px solid var(--accent-ink);outline-offset:8px;border-radius:6px;}
+  .disclosure > summary h2{margin:0;}
+  .disclosure .chev{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;
+    background:var(--surface-2);color:var(--muted);transition:transform .2s;}
+  .disclosure > summary:hover .chev{color:var(--ink);}
+  .disclosure[open] .chev{transform:rotate(180deg);}
+  .disclosure .lede{margin:14px 0 0;color:var(--muted);font-size:16.5px;line-height:1.65;max-width:52ch;}
 
   /* size table */
   .tablewrap{overflow-x:auto;margin-top:32px;border:1px solid var(--hair);border-radius:var(--radius);
@@ -151,7 +164,7 @@
     .brand .model{display:none;}
     li.item{grid-template-columns:1fr;gap:14px;}
     .tick{width:38px;height:38px;}
-    .start,.note,.reject,.list,.card,.done{padding-left:20px;padding-right:20px;}
+    .item.send,.note,.reject,.list,.card,.done{padding-left:20px;padding-right:20px;}
     th,td{padding:14px 18px;}
   }
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -160,13 +173,14 @@
 <header>
   <div class="head-inner">
     <div class="brand"><img class="logo" src="data:image/png;base64,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" alt="Moodus"><span class="model" data-i18n="kicker">Promoboard design</span></div>
-    <div class="langs" role="group" aria-label="Language">
-      <button class="langbtn" data-lang="en" onclick="setLang('en')">English</button>
-      <button class="langbtn" data-lang="nl" onclick="setLang('nl')">Nederlands</button>
-      <button class="langbtn" data-lang="fr" onclick="setLang('fr')">Français</button>
-      <button class="langbtn" data-lang="de" onclick="setLang('de')">Deutsch</button>
-      <button class="langbtn" data-lang="it" onclick="setLang('it')">Italiano</button>
-    </div>
+    <label class="sr-only" for="lang">Language</label>
+    <select id="lang" class="langsel" onchange="setLang(this.value)">
+      <option value="en">English</option>
+      <option value="nl">Nederlands</option>
+      <option value="fr">Français</option>
+      <option value="de">Deutsch</option>
+      <option value="it">Italiano</option>
+    </select>
   </div>
 </header>
 
@@ -174,11 +188,6 @@
   <div class="hero">
     <h1 data-i18n="title">Promoboard design rules</h1>
     <p class="sub" data-i18n="subtitle">What our in-house designer needs from you to design your Moodus board.</p>
-
-    <div class="start">
-      <span class="pw" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span>
-      <p data-i18n="start">Send everything in one email to <a href="mailto:design@moodus.com">design@moodus.com</a>.</p>
-    </div>
 
     <div class="note">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
@@ -222,39 +231,11 @@
       <span class="tick" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
       <div class="txt"><div class="eyebrow"><span data-i18n="i8n">Style direction</span><span class="pill" data-i18n="optional">If you have them</span></div><p class="cap" data-i18n="i8"></p></div>
     </li>
+    <li class="item send">
+      <span class="tick" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span>
+      <div class="txt"><div class="eyebrow"><span data-i18n="sendLabel">Send it to us</span></div><p class="cap" data-i18n="start">Send everything in one email to <a href="mailto:design@moodus.com">design@moodus.com</a>.</p></div>
+    </li>
   </ul>
-
-  <h2 data-i18n="incLabel">What is included</h2>
-  <p class="lede" data-i18n="incSub">The design process covers the design itself. It does not cover correcting or improving the material you send us.</p>
-  <div class="split">
-    <div class="list yes">
-      <h3 data-i18n="incYes">Included</h3>
-      <ul>
-        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="in1">Designing your board with the text, images and logo you send</span></li>
-        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="in2">One revision round, if you want to change text or images</span></li>
-        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span data-i18n="in3">A print-ready file with bleed, safe zone and cutting contour</span></li>
-      </ul>
-    </div>
-    <div class="list no">
-      <h3 data-i18n="incNo">Not included</h3>
-      <ul>
-        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg><span data-i18n="ex1">Checking your text for spelling or typing errors</span></li>
-        <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg><span data-i18n="ex2">Retouching or editing your images</span></li>
-      </ul>
-    </div>
-  </div>
-
-  <h2 data-i18n="costLabel">Extra work</h2>
-  <p class="lede" data-i18n="costSub">Only charged if you ask for it. We always confirm before we start.</p>
-  <div class="tablewrap">
-    <table class="price">
-      <thead><tr><th data-i18n="thWork">Work</th><th data-i18n="thPrice">Price</th></tr></thead>
-      <tbody>
-        <tr><th scope="row" data-i18n="c1">Additional revision round</th><td data-i18n="c1p">€25</td></tr>
-        <tr><th scope="row" data-i18n="c2">Retouching images</th><td data-i18n="c2p">€25 per half hour</td></tr>
-      </tbody>
-    </table>
-  </div>
 
   <h2 data-i18n="noLabel">What we cannot use</h2>
   <p class="lede" data-i18n="noSub">These look fine on a screen but fall apart at print size. If this is all you have, let us know and we will tell you what is possible.</p>
@@ -268,29 +249,42 @@
     </ul>
   </div>
 
-  <h2 data-i18n="weLabel">What we take care of</h2>
-  <p class="lede" data-i18n="weSub">You do not have to prepare anything for print. Our designer sets all of this up.</p>
+  <h2 data-i18n="incLabel">What is included</h2>
+  <p class="lede" data-i18n="incSub">The design process covers the design itself. It does not cover correcting or improving the material you send us.</p>
+  <h3 class="grouplabel" data-i18n="incYes">Included</h3>
   <div class="cards">
     <div class="card"><h3 data-i18n="w1n">Layout</h3><p data-i18n="w1">Composition, sizing and balance across the whole board.</p></div>
     <div class="card"><h3 data-i18n="w2n">Bleed &amp; safe zone</h3><p data-i18n="w2">10 mm bleed around the board, 10 mm safe margin inside it.</p></div>
     <div class="card"><h3 data-i18n="w3n">Cutting contour</h3><p data-i18n="w3">The cut line and the terminal opening, positioned exactly.</p></div>
     <div class="card"><h3 data-i18n="w4n">Print file</h3><p data-i18n="w4">Colour conversion and a production-ready file for the printer.</p></div>
   </div>
-
-  <h2 data-i18n="sizeLabel">Board sizes</h2>
-  <p class="lede" data-i18n="sizeSub">Use these to check that your photos are sharp enough at real size.</p>
-  <div class="tablewrap">
-    <table>
-      <thead><tr><th data-i18n="thModel">Model</th><th data-i18n="thSize">Board size</th><th data-i18n="thBleed">Including bleed</th></tr></thead>
-      <tbody>
-        <tr><th scope="row">Moodus Give S</th><td>240 × 350 mm</td><td>260 × 370 mm</td></tr>
-        <tr><th scope="row">Moodus Give M</th><td>400 × 600 mm</td><td>420 × 620 mm</td></tr>
-        <tr><th scope="row">Moodus Give+ S</th><td>280 × 370 mm</td><td>300 × 390 mm</td></tr>
-        <tr><th scope="row">Moodus Give+ M</th><td>400 × 600 mm</td><td>420 × 620 mm</td></tr>
-        <tr><th scope="row">Moodus Give+ Wallmount</th><td>400 × 600 mm</td><td>420 × 620 mm</td></tr>
-      </tbody>
-    </table>
+  <div class="list no">
+    <h3 data-i18n="incNo">Not included</h3>
+    <ul>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg><span data-i18n="ex1">Checking your text for spelling or typing errors</span></li>
+      <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg><span data-i18n="ex2">Retouching or editing your images</span></li>
+    </ul>
   </div>
+
+  <details class="disclosure">
+    <summary>
+      <h2 data-i18n="sizeLabel">Board sizes</h2>
+      <span class="chev" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+    </summary>
+    <p class="lede" data-i18n="sizeSub">Use these to check that your photos are sharp enough at real size.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th data-i18n="thModel">Model</th><th data-i18n="thSize">Board size</th><th data-i18n="thBleed">Including bleed</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Moodus Give S</th><td>240 × 350 mm</td><td>260 × 370 mm</td></tr>
+          <tr><th scope="row">Moodus Give M</th><td>400 × 600 mm</td><td>420 × 620 mm</td></tr>
+          <tr><th scope="row">Moodus Give+ S</th><td>280 × 370 mm</td><td>300 × 390 mm</td></tr>
+          <tr><th scope="row">Moodus Give+ M</th><td>400 × 600 mm</td><td>420 × 620 mm</td></tr>
+          <tr><th scope="row">Moodus Give+ Wallmount</th><td>400 × 600 mm</td><td>420 × 620 mm</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
 
   <h2 data-i18n="appLabel">Approval</h2>
   <ul class="items">
@@ -317,8 +311,21 @@
     <p data-i18n="done">Once you approve, your board goes straight into production.</p>
   </div>
 
+  <h2 data-i18n="costLabel">Extra work</h2>
+  <p class="lede" data-i18n="costSub">Only charged if you ask for it. We always confirm before we start.</p>
+  <div class="tablewrap">
+    <table class="price">
+      <thead><tr><th data-i18n="thWork">Work</th><th data-i18n="thPrice">Price</th></tr></thead>
+      <tbody>
+        <tr><th scope="row" data-i18n="c1">Additional revision round</th><td data-i18n="c1p">€25</td></tr>
+        <tr><th scope="row" data-i18n="c2">Retouching images</th><td data-i18n="c2p">€25 per half hour</td></tr>
+      </tbody>
+    </table>
+  </div>
+
   <footer><span data-i18n="foot">Moodus — promoboard design · Questions? <a href="mailto:design@moodus.com">design@moodus.com</a></span></footer>
 </div>
+
 
 <script>
   const STR = {
@@ -329,6 +336,7 @@
       revLabel:"One revision round",
       rev:"You receive a design proposal, and you get one round of corrections on it. Send all your remarks together in a single message. Each additional revision round is €25.",
       start:'Send everything in one email to <a href="mailto:design@moodus.com">design@moodus.com</a>.',
+      sendLabel:"Send it to us",
       needLabel:"What we need from you",
       needSub:"We start designing once the required items are in. Anything missing pauses your board.",
       required:"Required",
@@ -352,9 +360,6 @@
       incLabel:"What is included",
       incSub:"The design process covers the design itself. It does not cover correcting or improving the material you send us.",
       incYes:"Included", incNo:"Not included",
-      in1:"Designing your board with the text, images and logo you send",
-      in2:"One revision round, if you want to change text or images",
-      in3:"A print-ready file with bleed, safe zone and cutting contour",
       ex1:"Checking your text for spelling or typing errors",
       ex2:"Retouching or editing your images",
       costLabel:"Extra work",
@@ -371,8 +376,6 @@
       no3:"Images sent through WhatsApp, Facebook or Instagram",
       no4:"A logo pasted into Word, PowerPoint or a PDF",
       no5:"Images under 300 dpi at the real board size",
-      weLabel:"What we take care of",
-      weSub:"You do not have to prepare anything for print. Our designer sets all of this up.",
       w1n:"Layout", w1:"Composition, sizing and balance across the whole board.",
       w2n:"Bleed &amp; safe zone", w2:"10 mm bleed around the board, 10 mm safe margin inside it.",
       w3n:"Cutting contour", w3:"The cut line and the terminal opening, positioned exactly.",
@@ -397,6 +400,7 @@
       revLabel:"Eén correctieronde",
       rev:"Je krijgt een ontwerpvoorstel en daarop één correctieronde. Stuur al je opmerkingen in één bericht tegelijk. Elke extra correctieronde kost €25.",
       start:'Stuur alles in één e-mail naar <a href="mailto:design@moodus.com">design@moodus.com</a>.',
+      sendLabel:"Stuur het naar ons",
       needLabel:"Wat we van je nodig hebben",
       needSub:"We beginnen met ontwerpen zodra de verplichte onderdelen binnen zijn. Ontbreekt er iets, dan staat je bord stil.",
       required:"Verplicht",
@@ -420,9 +424,6 @@
       incLabel:"Wat is inbegrepen",
       incSub:"Het ontwerpproces dekt het ontwerp zelf. Het dekt niet het corrigeren of verbeteren van het materiaal dat je aanlevert.",
       incYes:"Inbegrepen", incNo:"Niet inbegrepen",
-      in1:"Het ontwerpen van je bord met de tekst, beelden en het logo die je aanlevert",
-      in2:"Eén correctieronde, als je tekst of beeld wilt wijzigen",
-      in3:"Een drukklaar bestand met afloop, veilige zone en snijcontour",
       ex1:"Je tekst controleren op spelling of typefouten",
       ex2:"Je beelden retoucheren of bewerken",
       costLabel:"Extra werk",
@@ -439,8 +440,6 @@
       no3:"Afbeeldingen verstuurd via WhatsApp, Facebook of Instagram",
       no4:"Een logo geplakt in Word, PowerPoint of een PDF",
       no5:"Afbeeldingen onder 300 dpi op het echte bordformaat",
-      weLabel:"Wat wij regelen",
-      weSub:"Je hoeft zelf niets drukklaar te maken. Onze designer zet dit allemaal op.",
       w1n:"Opmaak", w1:"Compositie, formaten en balans over het hele bord.",
       w2n:"Afloop &amp; veilige zone", w2:"10 mm afloop rondom het bord, 10 mm veilige marge daarbinnen.",
       w3n:"Snijcontour", w3:"De snijlijn en de uitsparing voor de terminal, exact op positie.",
@@ -465,6 +464,7 @@
       revLabel:"Un tour de correction",
       rev:"Vous recevez une proposition de design, avec un seul tour de correction. Envoyez toutes vos remarques ensemble, en un seul message. Chaque tour de correction supplémentaire coûte 25 €.",
       start:'Envoyez tout en un seul e-mail à <a href="mailto:design@moodus.com">design@moodus.com</a>.',
+      sendLabel:"Envoyez-nous le tout",
       needLabel:"Ce dont nous avons besoin",
       needSub:"Nous commençons dès que les éléments obligatoires sont reçus. Tout élément manquant met votre panneau en attente.",
       required:"Obligatoire",
@@ -488,9 +488,6 @@
       incLabel:"Ce qui est inclus",
       incSub:"Le processus couvre la conception elle-même. Il ne couvre pas la correction ni l'amélioration du matériel que vous envoyez.",
       incYes:"Inclus", incNo:"Non inclus",
-      in1:"La conception de votre panneau avec les textes, les images et le logo que vous envoyez",
-      in2:"Un tour de correction, si vous souhaitez modifier un texte ou une image",
-      in3:"Un fichier prêt à imprimer avec fond perdu, zone de sécurité et tracé de découpe",
       ex1:"La relecture de vos textes (orthographe, fautes de frappe)",
       ex2:"La retouche ou la modification de vos images",
       costLabel:"Travail supplémentaire",
@@ -507,8 +504,6 @@
       no3:"Des images envoyées via WhatsApp, Facebook ou Instagram",
       no4:"Un logo collé dans Word, PowerPoint ou un PDF",
       no5:"Des images sous 300 dpi à la taille réelle du panneau",
-      weLabel:"Ce dont nous nous chargeons",
-      weSub:"Vous n'avez rien à préparer pour l'impression. Notre designer s'occupe de tout cela.",
       w1n:"Mise en page", w1:"Composition, tailles et équilibre sur l'ensemble du panneau.",
       w2n:"Fond perdu &amp; zone de sécurité", w2:"10 mm de fond perdu autour du panneau, 10 mm de marge de sécurité à l'intérieur.",
       w3n:"Tracé de découpe", w3:"La ligne de découpe et l'ouverture du terminal, positionnées exactement.",
@@ -533,6 +528,7 @@
       revLabel:"Eine Korrekturrunde",
       rev:"Du erhältst einen Designvorschlag und dazu eine Korrekturrunde. Schicke alle Anmerkungen gesammelt in einer Nachricht. Jede weitere Korrekturrunde kostet 25 €.",
       start:'Schicke alles in einer E-Mail an <a href="mailto:design@moodus.com">design@moodus.com</a>.',
+      sendLabel:"Schick es uns",
       needLabel:"Was wir von dir brauchen",
       needSub:"Wir starten mit dem Design, sobald die Pflichtangaben da sind. Fehlt etwas, pausiert dein Board.",
       required:"Pflicht",
@@ -556,9 +552,6 @@
       incLabel:"Was enthalten ist",
       incSub:"Der Designprozess umfasst die Gestaltung selbst. Nicht enthalten ist das Korrigieren oder Verbessern des Materials, das du lieferst.",
       incYes:"Enthalten", incNo:"Nicht enthalten",
-      in1:"Die Gestaltung deines Boards mit den Texten, Bildern und dem Logo, die du lieferst",
-      in2:"Eine Korrekturrunde, wenn du Text oder Bilder ändern möchtest",
-      in3:"Eine druckfertige Datei mit Anschnitt, Sicherheitszone und Schneidkontur",
       ex1:"Deine Texte auf Rechtschreib- oder Tippfehler prüfen",
       ex2:"Deine Bilder retuschieren oder bearbeiten",
       costLabel:"Zusatzarbeit",
@@ -575,8 +568,6 @@
       no3:"Bilder, die über WhatsApp, Facebook oder Instagram verschickt wurden",
       no4:"Ein Logo, das in Word, PowerPoint oder ein PDF eingefügt wurde",
       no5:"Bilder unter 300 dpi in der echten Board-Größe",
-      weLabel:"Was wir übernehmen",
-      weSub:"Du musst nichts druckfertig vorbereiten. Das richten wir alles ein.",
       w1n:"Layout", w1:"Komposition, Größen und Balance über das ganze Board.",
       w2n:"Anschnitt &amp; Sicherheitszone", w2:"10 mm Anschnitt rundum, 10 mm Sicherheitsabstand nach innen.",
       w3n:"Schneidkontur", w3:"Die Schnittlinie und die Aussparung für das Terminal, exakt positioniert.",
@@ -601,6 +592,7 @@
       revLabel:"Un giro di correzioni",
       rev:"Ricevi una proposta di design e su questa hai un solo giro di correzioni. Invia tutte le tue osservazioni insieme, in un unico messaggio. Ogni giro di correzioni aggiuntivo costa 25 €.",
       start:'Invia tutto in un\'unica e-mail a <a href="mailto:design@moodus.com">design@moodus.com</a>.',
+      sendLabel:"Inviacelo",
       needLabel:"Cosa ci serve da te",
       needSub:"Iniziamo a progettare appena arrivano gli elementi obbligatori. Se manca qualcosa, il tuo pannello resta fermo.",
       required:"Obbligatorio",
@@ -624,9 +616,6 @@
       incLabel:"Cosa è incluso",
       incSub:"Il processo copre la progettazione vera e propria. Non copre la correzione o il miglioramento del materiale che ci invii.",
       incYes:"Incluso", incNo:"Non incluso",
-      in1:"La progettazione del pannello con i testi, le immagini e il logo che invii",
-      in2:"Un giro di correzioni, se vuoi cambiare testi o immagini",
-      in3:"Un file pronto per la stampa con abbondanza, area di sicurezza e tracciato di taglio",
       ex1:"La revisione dei tuoi testi per errori di ortografia o battitura",
       ex2:"Il ritocco o la modifica delle tue immagini",
       costLabel:"Lavoro extra",
@@ -643,8 +632,6 @@
       no3:"Immagini inviate tramite WhatsApp, Facebook o Instagram",
       no4:"Un logo incollato in Word, PowerPoint o un PDF",
       no5:"Immagini sotto i 300 dpi alla dimensione reale del pannello",
-      weLabel:"Di cosa ci occupiamo noi",
-      weSub:"Non devi preparare nulla per la stampa. Ci pensa il nostro designer.",
       w1n:"Impaginazione", w1:"Composizione, dimensioni ed equilibrio su tutto il pannello.",
       w2n:"Abbondanza &amp; area di sicurezza", w2:"10 mm di abbondanza attorno al pannello, 10 mm di margine di sicurezza all'interno.",
       w3n:"Tracciato di taglio", w3:"La linea di taglio e l'apertura per il terminale, posizionate con precisione.",
@@ -668,7 +655,7 @@
     const d = STR[lang] || STR.en;
     document.documentElement.setAttribute('lang', lang);
     document.querySelectorAll('[data-i18n]').forEach(el=>{ el.innerHTML = d[el.dataset.i18n] ?? el.innerHTML; });
-    document.querySelectorAll('.langbtn').forEach(b=>{ b.setAttribute('aria-pressed', String(b.dataset.lang===lang)); });
+    document.getElementById('lang').value = lang;
   }
   setLang('en');
 </script>
